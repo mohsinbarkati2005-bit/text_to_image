@@ -1,0 +1,21 @@
+pip install diffusers transformers accelerate --upgrade
+!pip install safetensors
+import torch
+from diffusers import StableDiffusionPipeline
+import matplotlib.pyplot as plt
+from huggingface_hub import login
+login("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")  # Paste your token here
+pipe = StableDiffusionPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5",
+    torch_dtype=torch.float16,
+    use_safetensors=True
+)
+pipe = pipe.to("cuda")
+user_prompt = input("Enter your image prompt: ")
+image = pipe(user_prompt).images[0]
+
+# Display the generated image
+plt.imshow(image)
+plt.axis("off")
+plt.title("Generated Image")
+plt.show()
